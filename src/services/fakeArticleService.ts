@@ -80,11 +80,11 @@ export function getArticles() {
   return articles;
 }
 
-export function getFood(id: string) {
+export function getArticle(id: string) {
   return articles.find((article) => article._id === id);
 }
 
-export function saveFood(article: ArticleFormData) {
+export function saveArticle(article: ArticleFormData) {
   const categoryInDb = getCategories().find(
     (category) => category._id === article.categoryId
   );
@@ -111,10 +111,10 @@ export function saveFood(article: ArticleFormData) {
   return ArticleInDb;
 }
 
-export function deleteFood(id: string) {
-  const foodInDb = articles.find((article) => article._id === id);
+export function deleteArticle(id: string) {
+  const articleInDb = articles.find((article) => article._id === id);
 
-  if (foodInDb) articles.splice(articles.indexOf(foodInDb), 1);
+  if (articleInDb) articles.splice(articles.indexOf(articleInDb), 1);
 
-  return foodInDb;
+  return articleInDb;
 }

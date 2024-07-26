@@ -7,7 +7,7 @@ interface Props {
   onPageSelect(page: number): void;
 }
 
-export default function Pagination({
+function Pagination({
   pageSize,
   totalCount,
   selectedPage,
@@ -21,6 +21,7 @@ export default function Pagination({
     <ul className="pagination">
       {pages.map((page) => (
         <li
+          key={page}
           onClick={() => onPageSelect(page)}
           className={`page-item ${page === selectedPage ? "active" : ""}`}
         >
@@ -32,3 +33,5 @@ export default function Pagination({
     </ul>
   );
 }
+
+export default Pagination;
