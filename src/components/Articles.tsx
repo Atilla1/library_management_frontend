@@ -4,6 +4,7 @@ import Pagination from "./Pagination";
 
 export default function Articles() {
   const [articles, setArticles] = useState(getArticles());
+  const [selectedPage, setSelectedPage] = useState(1);
 
   function handleDelete(id: string) {
     const newArticles = articles.filter((article) => article._id !== id);
@@ -50,7 +51,12 @@ export default function Articles() {
         </tbody>
       </table>
 
-      <Pagination totalCount={articles.length} pageSize={2} />
+      <Pagination
+        totalCount={articles.length}
+        pageSize={3}
+        selectedPage={selectedPage}
+        onPageSelect={setSelectedPage}
+      />
     </div>
   );
 }

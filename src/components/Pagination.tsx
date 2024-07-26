@@ -1,21 +1,29 @@
+import { range } from "../utils";
+
 interface Props {
   totalCount: number;
   pageSize: number;
+  selectedPage: number;
+  onPageSelect(page: number): void;
 }
 
-export default function Pagination({ pageSize, totalCount }: Props) {
+export default function Pagination({
+  pageSize,
+  totalCount,
+  selectedPage,
+  onPageSelect,
+}: Props) {
   const pageCount = Math.ceil(totalCount / pageSize);
+  const pages = range(1, pageCount);
 
-  let pages: number[] = [];
-
-  for (let count = 1; count <= pageCount; count++) {
-    pages.push(count);
-  }
   if (pageCount === 1) return null;
   return (
     <ul className="pagination">
       {pages.map((page) => (
-        <li className="page-item">
+        <li
+          onClick={() => onPageSelect(page)}
+          className={`page-item ${page === selectedPage ? "active" : ""}`}
+        >
           <a className="page-link" href="#">
             {page}
           </a>
