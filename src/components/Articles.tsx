@@ -3,7 +3,7 @@ import { getArticles } from "../services/fakeArticleService";
 import Pagination from "./Pagination";
 import ListGroup from "./ListGroup";
 import { Category, getCategories } from "../services/fakeCategoryService";
-import { paginate } from "../utils";
+import { getAcronym, paginate } from "../utils";
 
 const DEFAULT_CATEGORY: Category = { _id: "", name: "All Categories" };
 const PAGE_SIZE = 3;
@@ -16,9 +16,21 @@ function Articles() {
     const newArticles = articles.filter((article) => article._id !== id);
     setArticles(newArticles);
   }
+
+  function handleCategorySelect(category: Category) {
+    setSelectedCategory(category);
+    setSelectedPage(1);
+  }
+
   if (articles.length === 0) return <p>Library is emty.</p>;
 
-  const paginatedArticles = paginate(articles, PAGE_SIZE, selectedPage);
+  const filteredArticles = selectedCategory._id
+    ? articles.filter(
+        (article) => article.category._id === selectedCategory._id
+      )
+    : articles;
+
+  const paginatedArticles = paginate(filteredArticles, PAGE_SIZE, selectedPage);
 
   return (
     <div className="row container pt-3">
@@ -26,7 +38,7 @@ function Articles() {
         <ListGroup
           items={[DEFAULT_CATEGORY, ...getCategories()]}
           selectedItem={selectedCategory}
-          onItemSelect={setSelectedCategory}
+          onItemSelect={handleCategorySelect}
         />
       </div>
       <div className="col-9">
@@ -47,7 +59,9 @@ function Articles() {
           <tbody>
             {paginatedArticles.map((article) => (
               <tr>
-                <td>{article.title}</td>
+                <td>
+                  {article.title} ({getAcronym(article.title)})
+                </td>
                 <td>{article.author}</td>
                 <td>{article.nbrPages}</td>
                 <td>{article.type}</td>
@@ -69,7 +83,7 @@ function Articles() {
         </table>
 
         <Pagination
-          totalCount={articles.length}
+          totalCount={filteredArticles.length}
           pageSize={PAGE_SIZE}
           selectedPage={selectedPage}
           onPageSelect={setSelectedPage}

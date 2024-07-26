@@ -18,3 +18,10 @@ export function paginate<T>(
 
   return items.slice(startIndex, endIndex);
 }
+
+export function getAcronym(title: string) {
+  return title
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase())
+    .join("");
+}

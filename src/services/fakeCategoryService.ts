@@ -6,10 +6,10 @@ export interface Category {
 }
 
 const categories: Category[] = [
-  { _id: "111", name: "Ficton" },
-  { _id: "222", name: "Action" },
-  { _id: "333", name: "Drama" },
-  { _id: "444", name: "Romantik" },
+  { _id: "11", name: "Ficton" },
+  { _id: "22", name: "Action" },
+  { _id: "33", name: "Drama" },
+  { _id: "44", name: "Romantik" },
 ];
 
 export function getCategories() {
