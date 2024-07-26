@@ -87,6 +87,8 @@ export const articles: Article[] = [
     nbrPages: 280,
     type: "Uppslagsbok",
     isBorrowable: false,
+    borrower: "Kalle Anka",
+    borrowDate: "2024-07-01",
     category: { _id: "44", name: "Romantik" },
   },
 ];

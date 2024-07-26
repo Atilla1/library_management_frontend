@@ -1,16 +1,24 @@
 import { useState } from "react";
+import _ from "lodash";
 import { getArticles } from "../services/fakeArticleService";
 import Pagination from "./Pagination";
 import ListGroup from "./ListGroup";
 import { Category, getCategories } from "../services/fakeCategoryService";
 import { getAcronym, paginate } from "../utils";
 
+interface SortColumn {
+  path: string;
+  order: "asc" | "desc";
+}
+
 const DEFAULT_CATEGORY: Category = { _id: "", name: "All Categories" };
+const DEFAULT_SORT_COLUMN: SortColumn = { path: "category.name", order: "asc" };
 const PAGE_SIZE = 3;
 function Articles() {
   const [articles, setArticles] = useState(getArticles());
   const [selectedPage, setSelectedPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORY);
+  const [sortColumn, setSortColumn] = useState(DEFAULT_SORT_COLUMN);
 
   function handleDelete(id: string) {
     const newArticles = articles.filter((article) => article._id !== id);
@@ -22,6 +30,16 @@ function Articles() {
     setSelectedPage(1);
   }
 
+  function handleSort(path: string) {
+    if (path === sortColumn.path) {
+      sortColumn.order = sortColumn.order = "asc" ? "desc" : "asc";
+    } else {
+      sortColumn.path = path;
+      sortColumn.order = "asc";
+    }
+    setSortColumn({ ...sortColumn });
+  }
+
   if (articles.length === 0) return <p>Library is emty.</p>;
 
   const filteredArticles = selectedCategory._id
@@ -30,7 +48,13 @@ function Articles() {
       )
     : articles;
 
-  const paginatedArticles = paginate(filteredArticles, PAGE_SIZE, selectedPage);
+  const sortedArticles = _.orderBy(
+    filteredArticles,
+    sortColumn.path,
+    sortColumn.order
+  );
+
+  const paginatedArticles = paginate(sortedArticles, PAGE_SIZE, selectedPage);
 
   return (
     <div className="row container pt-3">
@@ -45,20 +69,22 @@ function Articles() {
         <table className="table">
           <thead>
             <tr>
-              <th scope="col">Title</th>
-              <th scope="col">Author</th>
-              <th scope="col">Number of pages</th>
-              <th scope="col">Type</th>
-              <th scope="col">Run time minutes</th>
-              <th scope="col">Borrowable</th>
-              <th scope="col">Borrower</th>
-              <th scope="col">Borrow date</th>
+              <th onClick={() => handleSort("category.name")}>Category</th>
+              <th>Title</th>
+              <th>Author</th>
+              <th>Number of pages</th>
+              <th onClick={() => handleSort("type")}>Type</th>
+              <th>Run time minutes</th>
+              <th>Borrowable</th>
+              <th>Borrower</th>
+              <th>Borrow date</th>
               <th />
             </tr>
           </thead>
           <tbody>
             {paginatedArticles.map((article) => (
               <tr>
+                <td>{article.category.name}</td>
                 <td>
                   {article.title} ({getAcronym(article.title)})
                 </td>
