@@ -1,10 +1,11 @@
 import { useState } from "react";
-import _ from "lodash";
 import { getArticles } from "../services/fakeArticleService";
 import Pagination from "./Pagination";
 import ListGroup from "./ListGroup";
 import { Category, getCategories } from "../services/fakeCategoryService";
-import { getAcronym, paginate } from "../utils";
+import ArticlesTable from "./ArticlesTable";
+import { paginate } from "../utils";
+import _ from "lodash";
 
 interface SortColumn {
   path: string;
@@ -58,56 +59,19 @@ function Articles() {
 
   return (
     <div className="row container pt-3">
-      <div className="col-3">
+      <div className="col-2">
         <ListGroup
           items={[DEFAULT_CATEGORY, ...getCategories()]}
           selectedItem={selectedCategory}
           onItemSelect={handleCategorySelect}
         />
       </div>
-      <div className="col-9">
-        <table className="table">
-          <thead>
-            <tr>
-              <th onClick={() => handleSort("category.name")}>Category</th>
-              <th>Title</th>
-              <th>Author</th>
-              <th>Number of pages</th>
-              <th onClick={() => handleSort("type")}>Type</th>
-              <th>Run time minutes</th>
-              <th>Borrowable</th>
-              <th>Borrower</th>
-              <th>Borrow date</th>
-              <th />
-            </tr>
-          </thead>
-          <tbody>
-            {paginatedArticles.map((article) => (
-              <tr>
-                <td>{article.category.name}</td>
-                <td>
-                  {article.title} ({getAcronym(article.title)})
-                </td>
-                <td>{article.author}</td>
-                <td>{article.nbrPages}</td>
-                <td>{article.type}</td>
-                <td>{article.runTimeMinutes}</td>
-                <td>{article.isBorrowable ? "Available" : "N/A"}</td>
-                <td>{article.borrower}</td>
-                <td>{article.borrowDate}</td>
-                <td>
-                  <button
-                    className="btn btn-danger"
-                    onClick={() => handleDelete(article._id)}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-
+      <div className="col">
+        <ArticlesTable
+          articles={paginatedArticles}
+          onSort={handleSort}
+          onDelete={handleDelete}
+        />
         <Pagination
           totalCount={filteredArticles.length}
           pageSize={PAGE_SIZE}
