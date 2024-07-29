@@ -1,11 +1,6 @@
 import { Article } from "../services/fakeArticleService";
-import Table from "./Table";
-import { Column } from "./TableHeader";
-
-export interface SortColumn {
-  path: string;
-  order: "asc" | "desc";
-}
+import { SortColumn, Column } from "../types";
+import Table from "./common/Table";
 
 interface Props {
   articles: Article[];

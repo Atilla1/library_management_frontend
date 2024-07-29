@@ -1,23 +1,10 @@
-import { Article } from "../services/fakeArticleService";
-import { SortColumn } from "./ArticlesTable";
+import { Column, SortColumn, TextColumn } from "../../types";
 
 interface Props {
   columns: Column[];
   sortColumn: SortColumn;
   onSort(sortColumn: SortColumn): void;
 }
-
-interface TextColumn {
-  path: string;
-  label: string;
-}
-
-interface ContentColumn {
-  key: string;
-  content(article: Article): JSX.Element;
-}
-
-export type Column = TextColumn | ContentColumn;
 
 function TableHeader({ columns, sortColumn, onSort }: Props) {
   function handleSort(path: string) {

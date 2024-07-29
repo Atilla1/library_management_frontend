@@ -1,7 +1,6 @@
-import { Article } from "../services/fakeArticleService";
-import { SortColumn } from "./ArticlesTable";
+import { Article, Column, SortColumn } from "../../types";
 import TableBody from "./TableBody";
-import TableHeader, { Column } from "./TableHeader";
+import TableHeader from "./TableHeader";
 
 interface Props {
   articles: Article[];

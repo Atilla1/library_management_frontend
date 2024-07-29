@@ -1,19 +1,5 @@
-// fakeArticleService.ts
-
-import { Category, getCategories } from "./fakeCategoryService";
-
-export interface Article {
-  _id: string;
-  title: string;
-  runTimeMinutes?: number;
-  author: string;
-  nbrPages: number;
-  type: string;
-  isBorrowable: boolean;
-  category: Category;
-  borrower?: string;
-  borrowDate?: string;
-}
+import { Article } from "../types";
+import { getCategories } from "./fakeCategoryService";
 
 export interface ArticleFormData {
   _id?: string;

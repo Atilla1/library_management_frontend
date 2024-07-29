@@ -1,9 +1,4 @@
-// fakeCategoryService.js
-
-export interface Category {
-  _id: string;
-  name: string;
-}
+import { Category } from "../types";
 
 const categories: Category[] = [
   { _id: "11", name: "Ficton" },
