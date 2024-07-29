@@ -1,22 +1,37 @@
 import { Article } from "../services/fakeArticleService";
 import { getAcronym } from "../utils";
 
+export interface SortColumn {
+  path: string;
+  order: "asc" | "desc";
+}
+
 interface Props {
   articles: Article[];
-  onSort(path: string): void;
+  sortColumn: SortColumn;
+  onSort(sortColumn: SortColumn): void;
   onDelete(id: string): void;
 }
 
-function ArticlesTable({ articles, onSort, onDelete }: Props) {
+function ArticlesTable({ articles, sortColumn, onSort, onDelete }: Props) {
+  function handleSort(path: string) {
+    if (path === sortColumn.path) {
+      sortColumn.order = sortColumn.order = "asc" ? "desc" : "asc";
+    } else {
+      sortColumn.path = path;
+      sortColumn.order = "asc";
+    }
+    onSort({ ...sortColumn });
+  }
   return (
     <table className="table">
       <thead>
         <tr>
-          <th onClick={() => onSort("category.name")}>Category</th>
+          <th onClick={() => handleSort("category.name")}>Category</th>
           <th>Title</th>
           <th>Author</th>
           <th>Number of pages</th>
-          <th onClick={() => onSort("type")}>Type</th>
+          <th onClick={() => handleSort("type")}>Type</th>
           <th>Run time minutes</th>
           <th>Borrowable</th>
           <th>Borrower</th>
