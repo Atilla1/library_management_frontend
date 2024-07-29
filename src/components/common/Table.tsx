@@ -1,6 +1,5 @@
-import { Article, Column, SortColumn } from "../../types";
-import TableBody from "./TableBody";
-import TableHeader from "./TableHeader";
+import { TableBody, TableHeader } from "@components/common";
+import { Article, Column, SortColumn } from "@types";
 
 interface Props {
   articles: Article[];

@@ -1,6 +1,5 @@
-import { Article } from "../services/fakeArticleService";
-import { SortColumn, Column } from "../types";
-import Table from "./common/Table";
+import { SortColumn, Column, Article } from "@types";
+import { Table } from "@components/common";
 
 interface Props {
   articles: Article[];

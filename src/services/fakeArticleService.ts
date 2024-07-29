@@ -1,4 +1,4 @@
-import { Article } from "../types";
+import { Article } from "@types";
 import { getCategories } from "./fakeCategoryService";
 
 export interface ArticleFormData {

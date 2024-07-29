@@ -1,7 +1,6 @@
+import { Article, Column } from "@types";
+import { getAcronym } from "@utils";
 import _ from "lodash";
-import { Article } from "../../services/fakeArticleService";
-import { getAcronym } from "../../utils";
-import { Column } from "../../types";
 
 interface Props {
   articles: Article[];
