@@ -1,6 +1,6 @@
 import { Article } from "../services/fakeArticleService";
-import TableBody from "./TableBody";
-import TableHeader, { Column } from "./TableHeader";
+import Table from "./Table";
+import { Column } from "./TableHeader";
 
 export interface SortColumn {
   path: string;
@@ -38,10 +38,12 @@ function ArticlesTable({ articles, sortColumn, onSort, onDelete }: Props) {
     },
   ];
   return (
-    <table className="table">
-      <TableHeader onSort={onSort} sortColumn={sortColumn} columns={columns} />
-      <TableBody articles={articles} columns={columns} onDelete={onDelete} />
-    </table>
+    <Table
+      articles={articles}
+      columns={columns}
+      onSort={onSort}
+      sortColumn={sortColumn}
+    />
   );
 }
 

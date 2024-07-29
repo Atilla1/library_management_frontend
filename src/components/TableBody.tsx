@@ -6,10 +6,9 @@ import { Column } from "./TableHeader";
 interface Props {
   articles: Article[];
   columns: Column[];
-  onDelete(id: string): void;
 }
 
-function TableBody({ articles, columns, onDelete }: Props) {
+function TableBody({ articles, columns }: Props) {
   return (
     <tbody>
       {articles.map((article) => (
