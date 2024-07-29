@@ -1,6 +1,6 @@
 import { Article } from "../services/fakeArticleService";
 import { getAcronym } from "../utils";
-import TableHeader from "./TableHeader";
+import TableHeader, { Column } from "./TableHeader";
 
 export interface SortColumn {
   path: string;
@@ -15,18 +15,21 @@ interface Props {
 }
 
 function ArticlesTable({ articles, sortColumn, onSort, onDelete }: Props) {
-  function handleSort(path: string) {
-    if (path === sortColumn.path) {
-      sortColumn.order = sortColumn.order = "asc" ? "desc" : "asc";
-    } else {
-      sortColumn.path = path;
-      sortColumn.order = "asc";
-    }
-    onSort({ ...sortColumn });
-  }
+  const columns: Column[] = [
+    { path: "category.name", label: "Category" },
+    { path: "name", label: "Name" },
+    { path: "author", label: "Author" },
+    { path: "nbrPages", label: "Number of pages" },
+    { path: "type", label: "Type" },
+    { path: "runTimeMinutes", label: "Run Time Minutes" },
+    { path: "isBorrowable", label: "Borrowable" },
+    { path: "borrower", label: "Borrower" },
+    { path: "borrowDate", label: "Borrow date" },
+    { key: "delete" },
+  ];
   return (
     <table className="table">
-      <TableHeader onSort={onSort} sortColumn={sortColumn} />
+      <TableHeader onSort={onSort} sortColumn={sortColumn} columns={columns} />
       <tbody>
         {articles.map((article) => (
           <tr>
