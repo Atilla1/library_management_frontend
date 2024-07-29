@@ -1,5 +1,6 @@
 import { Article } from "../services/fakeArticleService";
 import { getAcronym } from "../utils";
+import TableHeader from "./TableHeader";
 
 export interface SortColumn {
   path: string;
@@ -25,20 +26,7 @@ function ArticlesTable({ articles, sortColumn, onSort, onDelete }: Props) {
   }
   return (
     <table className="table">
-      <thead>
-        <tr>
-          <th onClick={() => handleSort("category.name")}>Category</th>
-          <th>Title</th>
-          <th>Author</th>
-          <th>Number of pages</th>
-          <th onClick={() => handleSort("type")}>Type</th>
-          <th>Run time minutes</th>
-          <th>Borrowable</th>
-          <th>Borrower</th>
-          <th>Borrow date</th>
-          <th />
-        </tr>
-      </thead>
+      <TableHeader onSort={onSort} sortColumn={sortColumn} />
       <tbody>
         {articles.map((article) => (
           <tr>
