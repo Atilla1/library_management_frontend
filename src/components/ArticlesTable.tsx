@@ -17,7 +17,7 @@ interface Props {
 function ArticlesTable({ articles, sortColumn, onSort, onDelete }: Props) {
   const columns: Column[] = [
     { path: "category.name", label: "Category" },
-    { path: "name", label: "Name" },
+    { path: "title", label: "Title" },
     { path: "author", label: "Author" },
     { path: "nbrPages", label: "Number of pages" },
     { path: "type", label: "Type" },
@@ -25,12 +25,22 @@ function ArticlesTable({ articles, sortColumn, onSort, onDelete }: Props) {
     { path: "isBorrowable", label: "Borrowable" },
     { path: "borrower", label: "Borrower" },
     { path: "borrowDate", label: "Borrow date" },
-    { key: "delete" },
+    {
+      key: "delete",
+      content: (article) => (
+        <button
+          className="btn btn-danger"
+          onClick={() => onDelete(article._id)}
+        >
+          Delete
+        </button>
+      ),
+    },
   ];
   return (
     <table className="table">
       <TableHeader onSort={onSort} sortColumn={sortColumn} columns={columns} />
-      <TableBody articles={articles} onDelete={onDelete} />
+      <TableBody articles={articles} columns={columns} onDelete={onDelete} />
     </table>
   );
 }
