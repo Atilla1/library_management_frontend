@@ -1,18 +1,18 @@
-import ArticlesTable from "./ArticlesTable";
+import ArticlesTable from "../ArticlesTable";
 import { useState } from "react";
 import _ from "lodash";
 
-import ListGroup from "./common/ListGroup";
-import Pagination from "./common/Pagination";
-import { getArticles } from "../services/fakeArticleService";
-import { getCategories } from "../services/fakeCategoryService";
-import { Category, SortColumn } from "../types";
-import { paginate } from "../utils";
+import ListGroup from "../common/ListGroup";
+import Pagination from "../common/Pagination";
+import { getArticles } from "../../services/fakeArticleService";
+import { getCategories } from "../../services/fakeCategoryService";
+import { Category, SortColumn } from "../../types";
+import { paginate } from "../../utils";
 
 const DEFAULT_CATEGORY: Category = { _id: "", name: "All Categories" };
 const DEFAULT_SORT_COLUMN: SortColumn = { path: "category.name", order: "asc" };
 const PAGE_SIZE = 3;
-function Articles() {
+function ArticlesPage() {
   const [articles, setArticles] = useState(getArticles());
   const [selectedPage, setSelectedPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORY);
@@ -71,4 +71,4 @@ function Articles() {
   );
 }
 
-export default Articles;
+export default ArticlesPage;
