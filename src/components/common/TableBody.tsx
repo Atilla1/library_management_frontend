@@ -1,5 +1,5 @@
-import { Article, Column } from "@types";
-import { getAcronym } from "@utils";
+import { Article, Column } from "../../types";
+import { getAcronym } from "../../utils";
 import _ from "lodash";
 
 interface Props {

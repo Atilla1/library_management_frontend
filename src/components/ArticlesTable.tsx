@@ -1,5 +1,5 @@
-import { SortColumn, Column, Article } from "@types";
-import { Table } from "@components/common";
+import { Article, SortColumn, Column } from "../types";
+import Table from "./common/Table";
 
 interface Props {
   articles: Article[];
