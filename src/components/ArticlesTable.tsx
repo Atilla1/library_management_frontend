@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Article, SortColumn, Column } from "../types";
 import Table from "./common/Table";
 
@@ -11,7 +12,13 @@ interface Props {
 function ArticlesTable({ articles, sortColumn, onSort, onDelete }: Props) {
   const columns: Column[] = [
     { path: "category.name", label: "Category" },
-    { path: "title", label: "Title" },
+    {
+      path: "title",
+      label: "Title",
+      content: (article) => (
+        <Link to={`/articles/${article._id}`}>{article.title}</Link>
+      ),
+    },
     { path: "author", label: "Author" },
     { path: "nbrPages", label: "Number of pages" },
     { path: "type", label: "Type" },
@@ -31,6 +38,7 @@ function ArticlesTable({ articles, sortColumn, onSort, onDelete }: Props) {
       ),
     },
   ];
+
   return (
     <Table
       articles={articles}

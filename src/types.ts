@@ -21,11 +21,11 @@ export interface Category {
 export interface Article {
   _id: string;
   title: string;
-  runTimeMinutes?: number;
+  runTimeMinutes: number;
   author: string;
   nbrPages: number;
   type: string;
-  isBorrowable: boolean;
+  isBorrowable?: boolean;
   category: Category;
   borrower?: string;
   borrowDate?: string;

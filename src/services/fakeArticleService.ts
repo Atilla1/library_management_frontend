@@ -1,14 +1,14 @@
-import { Article } from "@types";
+import { Article } from "../types";
 import { getCategories } from "./fakeCategoryService";
 
 export interface ArticleFormData {
   _id?: string;
   title: string;
-  runTimeMinutes?: number;
+  runTimeMinutes: number;
   author: string;
   nbrPages: number;
   type: string;
-  isBorrowable: boolean;
+  isBorrowable?: boolean;
   categoryId: string;
   borrower?: string;
   borrowDate?: string;
@@ -16,66 +16,70 @@ export interface ArticleFormData {
 
 export const articles: Article[] = [
   {
-    _id: "1",
+    _id: "1-abcd_id",
     title: "The Great Gatsby",
     author: "F. Scott Fitzgerald",
     nbrPages: 180,
+    runTimeMinutes: 0,
     type: "Book",
     isBorrowable: true,
-    category: { _id: "11", name: "Ficton" },
+    category: { _id: "11_catid", name: "Ficton" },
   },
   {
-    _id: "2",
+    _id: "2-abcd_id",
     title: "I Have No Mouth & I Must Scream",
     author: "Harlan Ellison",
-    nbrPages: 280,
+    nbrPages: 0,
+    runTimeMinutes: 125,
     type: "DVD",
     isBorrowable: true,
-    category: { _id: "22", name: "Action" },
+    category: { _id: "22_catid", name: "Action" },
   },
   {
-    _id: "3",
+    _id: "3-abcd_id",
     title: "Where the Wild Things Are",
     author: "Maurice Sendak",
-    nbrPages: 280,
+    nbrPages: 0,
     runTimeMinutes: 120,
-    type: "Ljudbok",
+    type: "Audiobook",
     isBorrowable: false,
     borrower: "Kalle Anka",
     borrowDate: "2024-07-01",
-    category: { _id: "33", name: "Drama" },
+    category: { _id: "33_catid", name: "Drama" },
   },
   {
-    _id: "4",
+    _id: "4-abcd_id",
     title: "I Am America",
     author: "Stephen Colbert ",
+    nbrPages: 0,
     runTimeMinutes: 300,
-    nbrPages: 280,
     type: "DVD",
     isBorrowable: false,
     borrower: "Kalle Anka",
     borrowDate: "2024-07-01",
-    category: { _id: "44", name: "Romantik" },
+    category: { _id: "44_catid", name: "Romantik" },
   },
   {
-    _id: "5",
+    _id: "5-abcd_id",
     title: "Blue Sisters",
     author: "Coco Mellors ",
     nbrPages: 280,
+    runTimeMinutes: 0,
     type: "Book",
     isBorrowable: true,
-    category: { _id: "44", name: "Romantik" },
+    category: { _id: "44_catid", name: "Romantik" },
   },
   {
-    _id: "6",
+    _id: "6-abcd_id",
     title: "Intermezzo",
     author: "Sally Rooney",
     nbrPages: 280,
-    type: "Uppslagsbok",
+    runTimeMinutes: 0,
+    type: "Reference book",
     isBorrowable: false,
     borrower: "Kalle Anka",
     borrowDate: "2024-07-01",
-    category: { _id: "44", name: "Romantik" },
+    category: { _id: "44_catid", name: "Romantik" },
   },
 ];
 

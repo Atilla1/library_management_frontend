@@ -4,10 +4,11 @@ import _ from "lodash";
 
 import ListGroup from "../common/ListGroup";
 import Pagination from "../common/Pagination";
-import { getArticles } from "../../services/fakeArticleService";
+import { deleteArticle, getArticles } from "../../services/fakeArticleService";
 import { getCategories } from "../../services/fakeCategoryService";
 import { Category, SortColumn } from "../../types";
 import { paginate } from "../../utils";
+import { Link } from "react-router-dom";
 
 const DEFAULT_CATEGORY: Category = { _id: "", name: "All Categories" };
 const DEFAULT_SORT_COLUMN: SortColumn = { path: "category.name", order: "asc" };
@@ -21,6 +22,7 @@ function ArticlesPage() {
   function handleDelete(id: string) {
     const newArticles = articles.filter((article) => article._id !== id);
     setArticles(newArticles);
+    deleteArticle(id);
   }
 
   function handleCategorySelect(category: Category) {
@@ -54,6 +56,9 @@ function ArticlesPage() {
         />
       </div>
       <div className="col">
+        <Link to="/articles/new" className="btn btn-primary mb-2">
+          New Article
+        </Link>
         <ArticlesTable
           articles={paginatedArticles}
           sortColumn={sortColumn}
