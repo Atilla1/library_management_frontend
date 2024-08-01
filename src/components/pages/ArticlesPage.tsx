@@ -56,8 +56,11 @@ function ArticlesPage() {
         />
       </div>
       <div className="col">
-        <Link to="/articles/new" className="btn btn-primary mb-2">
+        <Link to="/articles/new" className="btn btn-primary mb-2 m-1">
           New Article
+        </Link>
+        <Link to="/categories/new" className="btn btn-primary mb-2 m-1 ">
+          New Category
         </Link>
         <ArticlesTable
           articles={paginatedArticles}

@@ -14,9 +14,11 @@ function TableBody({ articles, columns }: Props) {
         <tr key={article._id}>
           {columns.map((column) =>
             "content" in column ? (
-              <td key={column.key}>{column.content(article)}</td>
+              <td key={`${article._id}-${column.key}`}>
+                {column.content(article)}
+              </td>
             ) : (
-              <td key={column.path}>
+              <td key={`${article._id}-${column.path}`}>
                 {column.path === "title" ? (
                   <>
                     {_.get(article, column.path)} (

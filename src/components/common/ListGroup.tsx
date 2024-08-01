@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Category } from "../../types";
 
 interface Props {
@@ -17,7 +18,16 @@ function ListGroup({ items, selectedItem, onItemSelect }: Props) {
             item._id === selectedItem._id ? "active" : ""
           } `}
         >
-          {item.name}
+          {item._id ? (
+            <Link
+              onClick={() => console.log(item._id)}
+              to={`/categories/${item._id}`}
+            >
+              {item.name}
+            </Link>
+          ) : (
+            <span>{item.name}</span>
+          )}
         </li>
       ))}
     </ul>

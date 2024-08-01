@@ -1,11 +1,16 @@
 import { Category } from "../types";
 import { getArticles } from "./fakeArticleService";
 
-const categories: Category[] = [
-  { _id: "11_catid", name: "Ficton" },
+export interface CategoryFormData {
+  _id?: string;
+  name: string;
+}
+
+export const categories: Category[] = [
+  { _id: "11_catid", name: "Fiction" },
   { _id: "22_catid", name: "Action" },
   { _id: "33_catid", name: "Drama" },
-  { _id: "44_catid", name: "Romantik" },
+  { _id: "44_catid", name: "Romance" },
 ];
 
 export function getCategories() {
@@ -16,10 +21,20 @@ export function getCategory(id: string) {
   return categories.find((category) => category._id === id);
 }
 
-export function saveCategory(category: Category) {
+export function saveCategory(category: CategoryFormData) {
+  // Kontrollera om en kategori med samma namn redan existerar
+  const existingCategory = categories.find(
+    (f) =>
+      f.name.toLowerCase() === category.name.toLowerCase() &&
+      f._id !== category._id
+  );
+
+  if (existingCategory) {
+    throw new Error(`Category with name "${category.name}" already exists.`);
+  }
+
   const categoryInDb =
     categories.find((f) => f._id === category._id) || ({} as Category);
-
   categoryInDb.name = category.name;
 
   if (!categoryInDb._id) {
@@ -44,7 +59,6 @@ export function deleteCategory(id: string) {
   }
 
   const categoryInDb = categories.find((category) => category._id === id);
-
   if (categoryInDb) {
     categories.splice(categories.indexOf(categoryInDb), 1);
   }
