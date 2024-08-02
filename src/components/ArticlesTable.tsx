@@ -1,22 +1,29 @@
 import { Link } from "react-router-dom";
 import { Article, SortColumn, Column } from "../types";
-import Table from "./common/Table";
+import Table from "./Table";
 
 interface Props {
   articles: Article[];
   sortColumn: SortColumn;
   onSort(sortColumn: SortColumn): void;
-  onDelete(id: string): void;
+  onCheckOut(id: string): void;
+  onCheckIn(id: string): void;
 }
 
-function ArticlesTable({ articles, sortColumn, onSort, onDelete }: Props) {
+function ArticlesTable({
+  articles,
+  sortColumn,
+  onSort,
+  onCheckOut,
+  onCheckIn,
+}: Props) {
   const columns: Column[] = [
     { path: "category.name", label: "Category" },
     {
       path: "title",
       label: "Title",
       content: (article) => (
-        <Link to={`/articles/${article._id}`}>{article.title}</Link>
+        <Link to={`/articles/${article.id}`}>{article.title}</Link>
       ),
     },
     { path: "author", label: "Author" },
@@ -27,14 +34,29 @@ function ArticlesTable({ articles, sortColumn, onSort, onDelete }: Props) {
     { path: "borrower", label: "Borrower" },
     { path: "borrowDate", label: "Borrow date" },
     {
-      key: "delete",
+      key: "actions",
       content: (article) => (
-        <button
-          className="btn btn-danger"
-          onClick={() => onDelete(article._id)}
-        >
-          Delete
-        </button>
+        <>
+          {article.type !== "Reference book" && (
+            <>
+              {article.isBorrowable ? (
+                <button
+                  className="btn btn-success m-1 "
+                  onClick={() => onCheckOut(article.id)}
+                >
+                  Check Out
+                </button>
+              ) : (
+                <button
+                  className="btn btn-warning m-1 "
+                  onClick={() => onCheckIn(article.id)}
+                >
+                  Check In
+                </button>
+              )}
+            </>
+          )}
+        </>
       ),
     },
   ];

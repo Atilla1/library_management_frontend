@@ -2,13 +2,18 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { getCategories } from "../../services/fakeCategoryService";
-import { getArticle, saveArticle } from "../../services/fakeArticleService";
+import { getCategories } from "../services/fakeCategoryService";
+import {
+  deleteArticle,
+  getArticle,
+  getArticles,
+  saveArticle,
+} from "../services/fakeArticleService";
 import { useEffect, useState } from "react";
-import { Article } from "../../types";
+import { Article, Category } from "../types";
 
 const schema = z.object({
-  _id: z.string().optional(),
+  id: z.string().optional(),
   categoryId: z.string().min(1, { message: "You must select a category" }),
   title: z.string().min(1, { message: "Title is required" }),
   author: z.string().min(1, { message: "Author is required" }),
@@ -30,6 +35,7 @@ type FormData = z.infer<typeof schema>;
 
 function ArticleFormPage() {
   const { id } = useParams();
+  const [categories, setCategories] = useState<Category[]>([]);
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const {
@@ -43,6 +49,13 @@ function ArticleFormPage() {
   });
 
   useEffect(() => {
+    async function fetch() {
+      const { data: categories } = await getCategories();
+      setCategories(categories);
+    }
+
+    fetch();
+
     if (!id || id === "new") return;
 
     const article = getArticle(id);
@@ -55,15 +68,21 @@ function ArticleFormPage() {
 
   function mapToFormData(article: Article): FormData {
     return {
-      _id: article._id,
+      id: article.id,
       title: article.title,
       author: article.author,
-      categoryId: article.category._id,
+      categoryId: article.category.id,
       nbrPages: article.nbrPages,
       runTimeMinutes: article.runTimeMinutes,
       type: article.type,
       isBorrowable: article.isBorrowable,
     };
+  }
+
+  function handleDelete(id: string) {
+    deleteArticle(id);
+    navigate("/articles");
+    console.log("Articles", getArticles());
   }
 
   function onSubmit(data: FormData) {
@@ -80,8 +99,8 @@ function ArticleFormPage() {
           <select {...register("categoryId")} className="form-select">
             <option />
 
-            {getCategories().map((category) => (
-              <option key={category._id} value={category._id}>
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>
                 {category.name}{" "}
               </option>
             ))}
@@ -146,12 +165,15 @@ function ArticleFormPage() {
         <button className="btn btn-primary" disabled={!isValid}>
           Save
         </button>
-        <button
-          onClick={() => navigate("/articles")}
-          className="btn btn-danger m-2"
-        >
-          Cancel
-        </button>
+        {id && id !== "new" && (
+          <button
+            type="button"
+            onClick={() => handleDelete(id)}
+            className="btn btn-danger m-2"
+          >
+            Delete
+          </button>
+        )}
       </form>
     </div>
   );

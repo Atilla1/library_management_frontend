@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Category } from "../../types";
+import { Category } from "../types";
 
 interface Props {
   items: Category[];
@@ -12,16 +12,16 @@ function ListGroup({ items, selectedItem, onItemSelect }: Props) {
     <ul className="list-group">
       {items.map((item) => (
         <li
-          key={item._id}
+          key={item.id}
           onClick={() => onItemSelect(item)}
           className={`list-group-item ${
-            item._id === selectedItem._id ? "active" : ""
+            item.id === selectedItem.id ? "active" : ""
           } `}
         >
-          {item._id ? (
+          {item.id ? (
             <Link
-              onClick={() => console.log(item._id)}
-              to={`/categories/${item._id}`}
+              onClick={() => console.log(item.id)}
+              to={`/categories/${item.id}`}
             >
               {item.name}
             </Link>

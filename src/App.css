@@ -1,0 +1,22 @@
+.clickable {
+  cursor: pointer;
+}
+
+input.login-input {
+  width: 360px;
+}
+
+.background {
+  background-image: url("/library.jpg"); /* Ersätt med din bild-URL */
+  background-size: cover;
+  background-position: center;
+  height: 100vh; /* 100% av viewporthöjd */
+  width: 100vw; /* 100% av viewportbredd */
+}
+
+.centered-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}

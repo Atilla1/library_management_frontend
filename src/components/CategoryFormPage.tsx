@@ -7,12 +7,12 @@ import {
   getCategories,
   getCategory,
   saveCategory,
-} from "../../services/fakeCategoryService";
-import { Category } from "../../types";
+} from "../services/fakeCategoryService";
+import { Category } from "../types";
 import { useEffect, useState } from "react";
 
 const schema = z.object({
-  _id: z.string().optional(),
+  id: z.string().optional(),
   name: z.string().min(1, { message: "Name is required." }),
 });
 
@@ -33,38 +33,35 @@ function CategoryFormPage() {
   });
 
   useEffect(() => {
-    if (!id || id === "new") return;
+    async function fetch() {
+      if (!id || id === "new") return;
 
-    const category = getCategory(id);
+      const { data: category } = await getCategory(id);
 
-    if (!category) return navigate("/not-found");
+      if (!category) return navigate("/not-found");
 
-    setName(category.name);
-    reset(mapToFormData(category));
+      setName(category.name);
+      reset(mapToFormData(category));
+    }
+
+    fetch();
   }, []);
 
   function mapToFormData(category: Category): FormData {
     return {
-      _id: category._id,
+      id: category.id,
       name: category.name,
     };
   }
 
-  function onSubmit(data: FormData) {
-    console.log("data", data);
-    console.log("Catagories", getCategories());
-    const categoryData: Category = {
-      _id: data._id ?? Date.now().toString(),
-      name: data.name,
-    };
-    saveCategory(categoryData);
+  async function onSubmit(data: FormData) {
+    await saveCategory(data);
     navigate("/articles");
   }
 
-  function handleDelete(id: string) {
-    deleteCategory(id);
+  async function handleDelete(id: string) {
+    await deleteCategory(id);
     navigate("/articles");
-    console.log("Catagories", getCategories());
   }
 
   return (
@@ -80,19 +77,15 @@ function CategoryFormPage() {
           Save
         </button>
 
-        <button
-          onClick={() => {
-            if (id) {
-              handleDelete(id);
-            } else {
-              // Hantera fallet när id är undefined
-              console.error("ID is undefined");
-            }
-          }}
-          className="btn btn-danger m-2"
-        >
-          Delete
-        </button>
+        {id && id !== "new" && (
+          <button
+            type="button"
+            onClick={() => handleDelete(id)}
+            className="btn btn-danger m-2"
+          >
+            Delete
+          </button>
+        )}
       </form>
     </div>
   );

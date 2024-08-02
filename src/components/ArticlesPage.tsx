@@ -1,26 +1,40 @@
-import ArticlesTable from "../ArticlesTable";
-import { useState } from "react";
+import ArticlesTable from "./ArticlesTable";
+import { useEffect, useState } from "react";
 import _ from "lodash";
 
-import ListGroup from "../common/ListGroup";
-import Pagination from "../common/Pagination";
-import { deleteArticle, getArticles } from "../../services/fakeArticleService";
-import { getCategories } from "../../services/fakeCategoryService";
-import { Category, SortColumn } from "../../types";
-import { paginate } from "../../utils";
+import ListGroup from "./ListGroup";
+import Pagination from "./Pagination";
+import {
+  deleteArticle,
+  getArticles,
+  checkOutArticle,
+  checkInArticle,
+} from "../services/fakeArticleService";
+import { getCategories } from "../services/fakeCategoryService";
+import { Category, SortColumn } from "../types";
+import { paginate } from "../utils";
 import { Link } from "react-router-dom";
 
-const DEFAULT_CATEGORY: Category = { _id: "", name: "All Categories" };
+const DEFAULT_CATEGORY: Category = { id: "", name: "All Categories" };
 const DEFAULT_SORT_COLUMN: SortColumn = { path: "category.name", order: "asc" };
 const PAGE_SIZE = 3;
 function ArticlesPage() {
   const [articles, setArticles] = useState(getArticles());
+  const [categories, setCategories] = useState<Category[]>([]);
   const [selectedPage, setSelectedPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORY);
   const [sortColumn, setSortColumn] = useState(DEFAULT_SORT_COLUMN);
 
+  useEffect(() => {
+    async function fetch() {
+      const { data: categories } = await getCategories();
+      setCategories(categories);
+    }
+    fetch();
+  }, []);
+
   function handleDelete(id: string) {
-    const newArticles = articles.filter((article) => article._id !== id);
+    const newArticles = articles.filter((article) => article.id !== id);
     setArticles(newArticles);
     deleteArticle(id);
   }
@@ -30,12 +44,39 @@ function ArticlesPage() {
     setSelectedPage(1);
   }
 
+  function handleCheckOut(id: string) {
+    const name = prompt("Enter your name to check out the article:");
+    if (name) {
+      try {
+        const updatedArticle = checkOutArticle(id, name);
+        setArticles(
+          articles.map((article) =>
+            article.id === id ? updatedArticle : article
+          )
+        );
+      } catch (error) {
+        alert("Error meddelande");
+      }
+    }
+  }
+
+  function handleCheckIn(id: string) {
+    try {
+      const updatedArticle = checkInArticle(id);
+      setArticles(
+        articles.map((article) =>
+          article.id === id ? updatedArticle : article
+        )
+      );
+    } catch (error) {
+      alert("Error meddelande");
+    }
+  }
+
   if (articles.length === 0) return <p>Library is emty.</p>;
 
-  const filteredArticles = selectedCategory._id
-    ? articles.filter(
-        (article) => article.category._id === selectedCategory._id
-      )
+  const filteredArticles = selectedCategory.id
+    ? articles.filter((article) => article.category.id === selectedCategory.id)
     : articles;
 
   const sortedArticles = _.orderBy(
@@ -50,7 +91,7 @@ function ArticlesPage() {
     <div className="row container pt-3">
       <div className="col-2">
         <ListGroup
-          items={[DEFAULT_CATEGORY, ...getCategories()]}
+          items={[DEFAULT_CATEGORY, ...categories]}
           selectedItem={selectedCategory}
           onItemSelect={handleCategorySelect}
         />
@@ -66,7 +107,8 @@ function ArticlesPage() {
           articles={paginatedArticles}
           sortColumn={sortColumn}
           onSort={setSortColumn}
-          onDelete={handleDelete}
+          onCheckOut={handleCheckOut}
+          onCheckIn={handleCheckIn}
         />
         <Pagination
           totalCount={filteredArticles.length}

@@ -14,12 +14,12 @@ export interface SortColumn {
 }
 
 export interface Category {
-  _id: string;
+  id: string;
   name: string;
 }
 
 export interface Article {
-  _id: string;
+  id: string;
   title: string;
   runTimeMinutes: number;
   author: string;

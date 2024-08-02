@@ -1,5 +1,5 @@
-import { Article, Column } from "../../types";
-import { getAcronym } from "../../utils";
+import { Article, Column } from "../types";
+import { getAcronym } from "../utils";
 import _ from "lodash";
 
 interface Props {
@@ -11,14 +11,14 @@ function TableBody({ articles, columns }: Props) {
   return (
     <tbody>
       {articles.map((article) => (
-        <tr key={article._id}>
+        <tr key={article.id}>
           {columns.map((column) =>
             "content" in column ? (
-              <td key={`${article._id}-${column.key}`}>
+              <td key={`${article.id}-${column.key}`}>
                 {column.content(article)}
               </td>
             ) : (
-              <td key={`${article._id}-${column.path}`}>
+              <td key={`${article.id}-${column.path}`}>
                 {column.path === "title" ? (
                   <>
                     {_.get(article, column.path)} (
