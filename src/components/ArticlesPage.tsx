@@ -4,16 +4,12 @@ import _ from "lodash";
 
 import ListGroup from "./ListGroup";
 import Pagination from "./Pagination";
-import {
-  deleteArticle,
-  getArticles,
-  checkOutArticle,
-  checkInArticle,
-} from "../services/fakeArticleService";
+import { getArticles, borrowArticle } from "../services/fakeArticleService";
 import { getCategories } from "../services/fakeCategoryService";
-import { Article, Category, SortColumn } from "../types";
+import { Article, Category, SortColumn, User } from "../types";
 import { paginate } from "../utils";
-import { Await, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 const DEFAULT_CATEGORY: Category = { id: "", name: "All Categories" };
 const DEFAULT_SORT_COLUMN: SortColumn = { path: "category.name", order: "asc" };
@@ -24,6 +20,7 @@ function ArticlesPage() {
   const [selectedPage, setSelectedPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORY);
   const [sortColumn, setSortColumn] = useState(DEFAULT_SORT_COLUMN);
+  const [user, setUser] = useState<User | null>();
 
   useEffect(() => {
     async function fetch() {
@@ -33,49 +30,47 @@ function ArticlesPage() {
       const { data: articles } = await getArticles();
       setArticles(articles);
 
-      console.log("Categories:", categories);
-      console.log("Articles:", articles);
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      const user = jwtDecode<User>(token);
+      setUser(user);
     }
     fetch();
   }, []);
-
-  // function handleDelete(id: string) {
-  //   const newArticles = articles.filter((article) => article.id !== id);
-  //   setArticles(newArticles);
-  //   deleteArticle(id);
-  // }
 
   function handleCategorySelect(category: Category) {
     setSelectedCategory(category);
     setSelectedPage(1);
   }
 
-  function handleCheckOut(id: string) {
-    const name = prompt("Enter your name to check out the article:");
-    if (name) {
-      try {
-        const updatedArticle = checkOutArticle(id, name);
-        setArticles(
-          articles.map((article) =>
-            article.id === id ? updatedArticle : article
-          )
-        );
-      } catch (error) {
-        alert("Error meddelande");
-      }
+  async function checkOutArticle(id: string) {
+    if (!user) {
+      return;
     }
-  }
 
-  function handleCheckIn(id: string) {
     try {
-      const updatedArticle = checkInArticle(id);
+      const { data: updatedArticle } = await borrowArticle(id, user.name);
       setArticles(
         articles.map((article) =>
           article.id === id ? updatedArticle : article
         )
       );
     } catch (error) {
-      alert("Error meddelande");
+      alert("Error checking out the article.");
+    }
+  }
+
+  async function checkInArticle(id: string) {
+    try {
+      const { data: updatedArticle } = await borrowArticle(id, null);
+      setArticles(
+        articles.map((article) =>
+          article.id === id ? updatedArticle : article
+        )
+      );
+    } catch (error) {
+      alert("Error checking in the article.");
     }
   }
 
@@ -111,8 +106,8 @@ function ArticlesPage() {
           articles={paginatedArticles}
           sortColumn={sortColumn}
           onSort={setSortColumn}
-          onCheckOut={handleCheckOut}
-          onCheckIn={handleCheckIn}
+          onCheckOut={checkOutArticle}
+          onCheckIn={checkInArticle}
         />
         <Pagination
           totalCount={filteredArticles.length}

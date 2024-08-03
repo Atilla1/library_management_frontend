@@ -63,8 +63,8 @@ function LoginPage() {
             </div>
             <div className="d-grid justify-content-center mt-4">
               <button className="btn btn-primary">Login</button>
-              <a className="mt-4" href="url">
-                Forgot username or password?
+              <a className="mt-4" href="/register">
+                Register a new account
               </a>
             </div>
           </form>
