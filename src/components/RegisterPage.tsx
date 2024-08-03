@@ -23,6 +23,7 @@ type FormData = z.infer<typeof schema>;
 
 function RegisterPage() {
   const {
+    setError,
     register,
     handleSubmit,
     formState: { errors },
@@ -32,9 +33,13 @@ function RegisterPage() {
 
   async function onSubmit(data: FormData) {
     console.log("Submitted", data);
-    await user.register(data);
-
-    navigate("/articles");
+    try {
+      await user.register(data);
+      navigate("/articles");
+    } catch (error: any) {
+      if (error.response.status === 400)
+        setError("username", { message: error.response.data });
+    }
   }
 
   return (
