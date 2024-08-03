@@ -7,13 +7,6 @@ export interface CategoryFormData {
   name: string;
 }
 
-export const categories: Category[] = [
-  { id: "11_catid", name: "Fiction" },
-  { id: "22_catid", name: "Action" },
-  { id: "33_catid", name: "Drama" },
-  { id: "44_catid", name: "Romance" },
-];
-
 export function getCategories() {
   return axios.get<Category[]>("http://localhost:5888/api/categories");
 }

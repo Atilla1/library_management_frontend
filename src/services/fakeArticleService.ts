@@ -24,38 +24,16 @@ export function getArticle(id: string) {
 }
 
 export function saveArticle(article: ArticleFormData) {
-  const categoryInDb = getCategories().find(
-    (category) => category.id === article.categoryId
-  );
-
-  if (!categoryInDb) throw new Error(`Category was not found`);
-
-  const ArticleInDb =
-    articles.find((f) => f.id === article.id) || ({} as Article);
-
-  ArticleInDb.title = article.title;
-  ArticleInDb.category = categoryInDb;
-  ArticleInDb.runTimeMinute = article.runTimeMinute;
-  ArticleInDb.author = article.author;
-  ArticleInDb.nbrPages = article.nbrPages;
-  ArticleInDb.type = article.type;
-  ArticleInDb.isBorrowable = article.isBorrowable;
-  ArticleInDb.borrowDate = article.borrowDate;
-
-  if (!ArticleInDb.id) {
-    ArticleInDb.id = Date.now().toString();
-    articles.push(ArticleInDb);
-  }
-
-  return ArticleInDb;
+  if (article.id)
+    return axios.put<Article>(
+      `http://localhost:5888/api/articles/${article.id}`,
+      article
+    );
+  return axios.post<Article>("http://localhost:5888/api/articles", article);
 }
 
 export function deleteArticle(id: string) {
-  const articleInDb = articles.find((article) => article.id === id);
-
-  if (articleInDb) articles.splice(articles.indexOf(articleInDb), 1);
-
-  return articleInDb;
+  return axios.delete(`http://localhost:5888/api/articles/${id}`);
 }
 
 export function checkOutArticle(id: string, borrower: string) {

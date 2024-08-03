@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import user from "../services/userService";
 
 const schema = z.object({
   name: z
@@ -30,8 +30,10 @@ function RegisterPage() {
 
   const navigate = useNavigate();
 
-  function onSubmit(data: FormData) {
+  async function onSubmit(data: FormData) {
     console.log("Submitted", data);
+    await user.register(data);
+
     navigate("/articles");
   }
 
@@ -75,10 +77,7 @@ function RegisterPage() {
               )}
             </div>
             <div className="d-grid justify-content-center mt-4">
-              <button className="btn btn-primary">Login</button>
-              <a className="mt-4" href="url">
-                Forgot username or password?
-              </a>
+              <button className="btn btn-primary">Register</button>
             </div>
           </form>
         </div>

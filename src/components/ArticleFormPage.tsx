@@ -80,14 +80,13 @@ function ArticleFormPage() {
     };
   }
 
-  function handleDelete(id: string) {
-    deleteArticle(id);
+  async function handleDelete(id: string) {
+    await deleteArticle(id);
     navigate("/articles");
-    console.log("Articles", getArticles());
   }
 
-  function onSubmit(data: FormData) {
-    saveArticle(data);
+  async function onSubmit(data: FormData) {
+    await saveArticle(data);
     navigate("/articles");
   }
 

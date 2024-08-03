@@ -32,6 +32,9 @@ function ArticlesPage() {
 
       const { data: articles } = await getArticles();
       setArticles(articles);
+
+      console.log("Categories:", categories);
+      console.log("Articles:", articles);
     }
     fetch();
   }, []);
@@ -77,7 +80,7 @@ function ArticlesPage() {
   }
 
   const filteredArticles = selectedCategory.id
-    ? articles.filter((article) => article.category.id === selectedCategory.id)
+    ? articles.filter((article) => article.categoryId === selectedCategory.id)
     : articles;
 
   const sortedArticles = _.orderBy(
