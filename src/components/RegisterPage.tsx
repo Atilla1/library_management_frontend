@@ -3,6 +3,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import user from "../services/userService";
+import auth from "../services/authService";
 
 const schema = z.object({
   name: z
@@ -35,6 +36,8 @@ function RegisterPage() {
     console.log("Submitted", data);
     try {
       await user.register(data);
+      const { data: token } = await auth.login(data);
+      localStorage.setItem("token", token);
       navigate("/articles");
     } catch (error: any) {
       if (error.response.status === 400)

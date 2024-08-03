@@ -32,6 +32,13 @@ export interface Article {
 }
 
 export interface User {
+  id: string;
+  name: string;
+  userName: string;
+  isAdmin: boolean;
+}
+
+export interface UserRegister {
   name: string;
   username: string;
   password: string;

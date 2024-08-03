@@ -1,7 +1,7 @@
 import axios from "axios";
-import { User } from "../types";
+import { UserRegister } from "../types";
 
-function register(user: User) {
+function register(user: UserRegister) {
   return axios.post("http://localhost:5888/api/users", user);
 }
 

@@ -6,6 +6,7 @@ import ArticleFormPage from "./components/ArticleFormPage";
 import CategoryFormPage from "./components/CategoryFormPage";
 import LoginPage from "./components/LoginPage";
 import RegisterPage from "./components/RegisterPage";
+import Logout from "./components/Logout";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,7 @@ const router = createBrowserRouter([
     ],
   },
   { path: "/login", element: <LoginPage /> },
+  { path: "/logout", element: <Logout /> },
   { path: "/register", element: <RegisterPage /> },
 ]);
 
