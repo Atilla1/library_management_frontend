@@ -24,7 +24,7 @@ const schema = z.object({
     })
     .min(0, { message: "Number of pages must be at least 0" })
     .max(10000, { message: "Number of pages cannot be higher than 1000" }),
-  runTimeMinutes: z
+  runTimeMinute: z
     .number({ invalid_type_error: "Minutes must be a number, at least 0" })
     .min(0, { message: "Minutes must be at least 0" })
     .max(10000, { message: "Minutes cannot be higher than 1000" }),
@@ -52,28 +52,29 @@ function ArticleFormPage() {
     async function fetch() {
       const { data: categories } = await getCategories();
       setCategories(categories);
+
+      if (!id || id === "new") return;
+
+      const { data: article } = await getArticle(id);
+
+      console.log("Article", article);
+      if (!article) return navigate("/not-found");
+
+      setTitle(article.title);
+      reset(mapToFormData(article));
     }
 
     fetch();
-
-    if (!id || id === "new") return;
-
-    const article = getArticle(id);
-
-    if (!article) return navigate("/not-found");
-
-    setTitle(article.title);
-    reset(mapToFormData(article));
   }, []);
 
   function mapToFormData(article: Article): FormData {
     return {
+      categoryId: article.categoryId,
       id: article.id,
       title: article.title,
       author: article.author,
-      categoryId: article.category.id,
       nbrPages: article.nbrPages,
-      runTimeMinutes: article.runTimeMinutes,
+      runTimeMinute: article.runTimeMinute,
       type: article.type,
       isBorrowable: article.isBorrowable,
     };
@@ -147,11 +148,11 @@ function ArticleFormPage() {
         <div className="mb-3 w-50">
           <label className="form-label">Number of minutes</label>
           <input
-            {...register("runTimeMinutes", { valueAsNumber: true })}
+            {...register("runTimeMinute", { valueAsNumber: true })}
             className="form-control"
           />
-          {errors.runTimeMinutes && (
-            <p className="text-danger">{errors.runTimeMinutes.message}</p>
+          {errors.runTimeMinute && (
+            <p className="text-danger">{errors.runTimeMinute.message}</p>
           )}
         </div>
         <div className="mb-3 w-50">

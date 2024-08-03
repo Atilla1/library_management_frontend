@@ -11,15 +11,15 @@ import {
   checkInArticle,
 } from "../services/fakeArticleService";
 import { getCategories } from "../services/fakeCategoryService";
-import { Category, SortColumn } from "../types";
+import { Article, Category, SortColumn } from "../types";
 import { paginate } from "../utils";
-import { Link } from "react-router-dom";
+import { Await, Link } from "react-router-dom";
 
 const DEFAULT_CATEGORY: Category = { id: "", name: "All Categories" };
 const DEFAULT_SORT_COLUMN: SortColumn = { path: "category.name", order: "asc" };
 const PAGE_SIZE = 3;
 function ArticlesPage() {
-  const [articles, setArticles] = useState(getArticles());
+  const [articles, setArticles] = useState<Article[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedPage, setSelectedPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORY);
@@ -29,15 +29,18 @@ function ArticlesPage() {
     async function fetch() {
       const { data: categories } = await getCategories();
       setCategories(categories);
+
+      const { data: articles } = await getArticles();
+      setArticles(articles);
     }
     fetch();
   }, []);
 
-  function handleDelete(id: string) {
-    const newArticles = articles.filter((article) => article.id !== id);
-    setArticles(newArticles);
-    deleteArticle(id);
-  }
+  // function handleDelete(id: string) {
+  //   const newArticles = articles.filter((article) => article.id !== id);
+  //   setArticles(newArticles);
+  //   deleteArticle(id);
+  // }
 
   function handleCategorySelect(category: Category) {
     setSelectedCategory(category);
@@ -72,8 +75,6 @@ function ArticlesPage() {
       alert("Error meddelande");
     }
   }
-
-  if (articles.length === 0) return <p>Library is emty.</p>;
 
   const filteredArticles = selectedCategory.id
     ? articles.filter((article) => article.category.id === selectedCategory.id)

@@ -29,7 +29,7 @@ function ArticlesTable({
     { path: "author", label: "Author" },
     { path: "nbrPages", label: "Number of pages" },
     { path: "type", label: "Type" },
-    { path: "runTimeMinutes", label: "Run Time Minutes" },
+    { path: "runTimeMinute", label: "Run Time Minutes" },
     { path: "isBorrowable", label: "Borrowable" },
     { path: "borrower", label: "Borrower" },
     { path: "borrowDate", label: "Borrow date" },

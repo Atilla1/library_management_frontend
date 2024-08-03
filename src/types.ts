@@ -21,12 +21,12 @@ export interface Category {
 export interface Article {
   id: string;
   title: string;
-  runTimeMinutes: number;
+  runTimeMinute: number;
   author: string;
   nbrPages: number;
   type: string;
   isBorrowable?: boolean;
-  category: Category;
+  categoryId: string;
   borrower?: string;
   borrowDate?: string;
 }

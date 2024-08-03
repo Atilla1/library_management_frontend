@@ -1,10 +1,11 @@
+import axios from "axios";
 import { Article } from "../types";
 import { getCategories } from "./fakeCategoryService";
 
 export interface ArticleFormData {
   id?: string;
   title: string;
-  runTimeMinutes: number;
+  runTimeMinute: number;
   author: string;
   nbrPages: number;
   type: string;
@@ -14,79 +15,12 @@ export interface ArticleFormData {
   borrowDate?: string;
 }
 
-export const articles: Article[] = [
-  {
-    id: "1-abcdid",
-    title: "The Great Gatsby",
-    author: "F. Scott Fitzgerald",
-    nbrPages: 180,
-    runTimeMinutes: 0,
-    type: "Book",
-    isBorrowable: true,
-    category: { id: "11_catid", name: "Ficton" },
-  },
-  {
-    id: "2-abcdid",
-    title: "I Have No Mouth & I Must Scream",
-    author: "Harlan Ellison",
-    nbrPages: 0,
-    runTimeMinutes: 125,
-    type: "DVD",
-    isBorrowable: true,
-    category: { id: "22_catid", name: "Action" },
-  },
-  {
-    id: "3-abcdid",
-    title: "Where the Wild Things Are",
-    author: "Maurice Sendak",
-    nbrPages: 0,
-    runTimeMinutes: 120,
-    type: "Audiobook",
-    isBorrowable: false,
-    borrower: "Kalle Anka",
-    borrowDate: "2024-07-01",
-    category: { id: "33_catid", name: "Drama" },
-  },
-  {
-    id: "4-abcdid",
-    title: "I Am America",
-    author: "Stephen Colbert ",
-    nbrPages: 0,
-    runTimeMinutes: 300,
-    type: "DVD",
-    isBorrowable: false,
-    borrower: "Kalle Anka",
-    borrowDate: "2024-07-01",
-    category: { id: "44_catid", name: "Romantik" },
-  },
-  {
-    id: "5-abcdid",
-    title: "Blue Sisters",
-    author: "Coco Mellors ",
-    nbrPages: 280,
-    runTimeMinutes: 0,
-    type: "Book",
-    isBorrowable: true,
-    category: { id: "44_catid", name: "Romantik" },
-  },
-  {
-    id: "6-abcdid",
-    title: "Intermezzo",
-    author: "Sally Rooney",
-    nbrPages: 280,
-    runTimeMinutes: 0,
-    type: "Reference book",
-    isBorrowable: false,
-    category: { id: "44_catid", name: "Romantik" },
-  },
-];
-
 export function getArticles() {
-  return articles;
+  return axios.get<Article[]>("http://localhost:5888/api/articles");
 }
 
 export function getArticle(id: string) {
-  return articles.find((article) => article.id === id);
+  return axios.get<Article>(`http://localhost:5888/api/articles/${id}`);
 }
 
 export function saveArticle(article: ArticleFormData) {
@@ -101,7 +35,7 @@ export function saveArticle(article: ArticleFormData) {
 
   ArticleInDb.title = article.title;
   ArticleInDb.category = categoryInDb;
-  ArticleInDb.runTimeMinutes = article.runTimeMinutes;
+  ArticleInDb.runTimeMinute = article.runTimeMinute;
   ArticleInDb.author = article.author;
   ArticleInDb.nbrPages = article.nbrPages;
   ArticleInDb.type = article.type;
