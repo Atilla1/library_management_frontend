@@ -32,7 +32,19 @@ function ArticlesTable({
     { path: "runTimeMinute", label: "Run Time Minutes" },
     { path: "isBorrowable", label: "Borrowable" },
     { path: "borrower", label: "Borrower" },
-    { path: "borrowDate", label: "Borrow date" },
+    {
+      path: "borrowDate",
+      label: "Borrow date",
+      content: (article) => {
+        const date = new Date(article.borrowDate || "");
+        if (!article.borrowDate) {
+          return <span></span>;
+        }
+
+        return <span>{date.toLocaleDateString()}</span>;
+      },
+    },
+
     {
       key: "actions",
       content: (article) => (
