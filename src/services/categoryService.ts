@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Category } from "../types";
-import { getArticles } from "./fakeArticleService";
+import { getArticles } from "./articleService";
 
 export interface CategoryFormData {
   id?: string;

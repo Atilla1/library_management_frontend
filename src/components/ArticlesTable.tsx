@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Article, SortColumn, Column } from "../types";
 import Table from "./Table";
+import { getAcronym } from "../utils";
 
 interface Props {
   articles: Article[];
@@ -23,7 +24,9 @@ function ArticlesTable({
       path: "title",
       label: "Title",
       content: (article) => (
-        <Link to={`/articles/${article.id}`}>{article.title}</Link>
+        <Link to={`/articles/${article.id}`}>
+          {article.title} ({getAcronym(article.title)})
+        </Link>
       ),
     },
     { path: "author", label: "Author" },

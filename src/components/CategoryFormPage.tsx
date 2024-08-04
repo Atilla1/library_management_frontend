@@ -4,10 +4,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import {
   deleteCategory,
-  getCategories,
   getCategory,
   saveCategory,
-} from "../services/fakeCategoryService";
+} from "../services/categoryService";
 import { Category } from "../types";
 import { useEffect, useState } from "react";
 

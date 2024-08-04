@@ -4,8 +4,8 @@ import _ from "lodash";
 
 import ListGroup from "./ListGroup";
 import Pagination from "./Pagination";
-import { getArticles, borrowArticle } from "../services/fakeArticleService";
-import { getCategories } from "../services/fakeCategoryService";
+import { getArticles, borrowArticle } from "../services/articleService";
+import { getCategories } from "../services/categoryService";
 import { Article, Category, SortColumn, User } from "../types";
 import { paginate } from "../utils";
 import { Link } from "react-router-dom";
@@ -13,7 +13,7 @@ import { jwtDecode } from "jwt-decode";
 
 const DEFAULT_CATEGORY: Category = { id: "", name: "All Categories" };
 const DEFAULT_SORT_COLUMN: SortColumn = { path: "category.name", order: "asc" };
-const PAGE_SIZE = 3;
+const PAGE_SIZE = 5;
 function ArticlesPage() {
   const [articles, setArticles] = useState<Article[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);

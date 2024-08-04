@@ -2,13 +2,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { getCategories } from "../services/fakeCategoryService";
+import { getCategories } from "../services/categoryService";
 import {
   deleteArticle,
   getArticle,
-  getArticles,
   saveArticle,
-} from "../services/fakeArticleService";
+} from "../services/articleService";
 import { useEffect, useState } from "react";
 import { Article, Category } from "../types";
 
