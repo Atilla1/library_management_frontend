@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Category } from "../types";
-import { getArticles } from "./articleService";
+import { BASE_URL } from "../constants";
 
 export interface CategoryFormData {
   id?: string;
@@ -8,23 +8,23 @@ export interface CategoryFormData {
 }
 
 export function getCategories() {
-  return axios.get<Category[]>("http://localhost:5888/api/categories");
+  return axios.get<Category[]>(`${BASE_URL}/api/categories`);
 }
 
 export function getCategory(id: string) {
-  return axios.get<Category>(`http://localhost:5888/api/categories/${id}`);
+  return axios.get<Category>(`${BASE_URL}/api/categories/${id}`);
 }
 
 export function saveCategory(category: CategoryFormData) {
   if (category.id)
     return axios.put<Category>(
-      `http://localhost:5888/api/categories/${category.id}`,
+      `${BASE_URL}/api/categories/${category.id}`,
       category
     );
 
-  return axios.post<Category>("http://localhost:5888/api/categories", category);
+  return axios.post<Category>(`${BASE_URL}/api/categories`, category);
 }
 
 export function deleteCategory(id: string) {
-  return axios.delete(`http://localhost:5888/api/categories/${id}`);
+  return axios.delete(`${BASE_URL}/api/categories/${id}`);
 }
