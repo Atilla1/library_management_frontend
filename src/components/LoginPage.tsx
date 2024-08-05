@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import auth from "../services/authService";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const schema = z.object({
   username: z.string().min(1, { message: "Username is required." }),
@@ -63,9 +63,9 @@ function LoginPage() {
             </div>
             <div className="d-grid justify-content-center mt-4">
               <button className="btn btn-primary">Login</button>
-              <a className="mt-4" href="/register">
+              <Link className="mt-4" to="/register">
                 Register a new account
-              </a>
+              </Link>
             </div>
           </form>
         </div>
